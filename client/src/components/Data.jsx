@@ -10,7 +10,37 @@ const Data = () =>{
     const[location, surveyData] = useLocationAndSurvey(true)
     const surveyTypes =["OPUS_STATIC", "JPL_APPS"]
     const tolerances = ["0.5cm", "0.8cm", "2cm", "3cm", "4cm"]
-    
+
+    /**
+     * Determination of likelyhood of movement
+     * @returns {string} - movement likelyhood in Low, Medium, High
+     */
+    const movementPotential =()=>{
+        let movementDetermination = ''
+        const surveyTolerances = calculatedTolerances(location, surveyData)
+
+        const totalPoints = surveyTolerances.reduce((current, previous)=> current + previous)
+
+        const percentHighConfidence = (surveyTolerances[0]+ surveyTolerances[3])/ totalPoints * 100
+
+        const percentLowMidConfidence = (surveyTolerances[1]+surveyTolerances[4]+surveyTolerances[5])/totalPoints * 100
+
+        const percentNoConfidence = (surveyTolerances[2]+ surveyTolerances[6])/totalPoints * 100
+
+        if(percentHighConfidence > 50 || percentHighConfidence< 25){
+            movementDetermination = 'Low'
+        } else {
+            if(percentLowMidConfidence > 70){
+                movementDetermination = 'Medium'
+            } else {
+                if (percentNoConfidence > 25){
+                    movementDetermination = 'High'
+                }
+            }
+        }
+
+        return movementDetermination
+    }
     return(
         <div className="data_information">
             <div className="data_container">
@@ -24,7 +54,9 @@ const Data = () =>{
                                 <li><strong>Longitude:</strong> {location.longitude}</li>
                                 <li><strong>ECEF: </strong>({location.x} , {location.y}, {location.z})</li>
                             </ul>
-                            <h3>Positional Change</h3>
+                            <h2>Positional Change</h2>
+                            <h3>Likelyhood of Movement</h3>
+                            <h4 className={movementPotential()==="Low" ? "low" : movementPotential() ==="Medium" ? 'medium' : 'high'}><strong>{movementPotential()}</strong></h4>
                             {surveyTypes.map((survey, key)=>(
                                 <ul key={key}>
                                     <li><h4>{survey.split("_")[0]}</h4></li>

@@ -167,6 +167,15 @@ a:hover {
   flex-wrap: wrap;
   flex-direction: row;
 }
+.low{
+  color: green;
+}
+.medium{
+  color:yellow;
+}
+.high{
+  color: red;
+}
 .plot_key{
   width: 100%;
   list-style-type: none;
