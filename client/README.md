@@ -5,8 +5,8 @@ This project takes an original location and survey data of a physical device in 
 
 In the root directory, you can run:
 
-### `npm run start`
+### `npm start`
 
-Runs the app.
+This will clear old build files, create a new build, and start the application serving up the front end using a express static. 
 Open [http://localhost:5000](http://localhost:5000) to view it in your browser.
 
