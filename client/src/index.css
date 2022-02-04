@@ -63,7 +63,7 @@ a:hover {
   max-width: 1300px;
 }
 .canvas-container{
-  max-width: 60vw;
+  /* max-width: 60vw; */
 }
 .section_header{
   text-align: center;
@@ -225,6 +225,7 @@ a:hover {
 .data_visualization{
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
 .data_information{
@@ -234,6 +235,7 @@ a:hover {
   height: auto;
   margin-left: 10px;
   max-width: calc((1300px / 3));
+  min-width: calc(960px /3);
   
 }
 .data_points{
@@ -264,3 +266,8 @@ a:hover {
   border-radius: 0;
 }
 
+@media only screen and (max-width: 959px){
+  .container{
+    flex-wrap: wrap;
+  }
+}
