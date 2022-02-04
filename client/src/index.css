@@ -120,8 +120,14 @@ a:hover {
 .green {
   background-color: green;
 }
-.orange {
-  background-color: orange;
+.red {
+  background-color: red;
+}
+.pink{
+  background-color: pink;
+}
+.black{
+  background-color: black;
 }
 .blue{
   background-color: blue;
