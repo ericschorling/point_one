@@ -2,6 +2,10 @@ import React from "react";
 import { averageFunction, calculatedTolerances } from "../utilities/functions.js";
 import { useLocationAndSurvey } from "../utilities/hooks.js";
 
+/**
+ * Data interpretation component rendered for the application
+ * @returns {Component}
+ */
 const Data = () =>{
     const[location, surveyData] = useLocationAndSurvey(true)
     const surveyTypes =["OPUS_STATIC", "JPL_APPS"]
@@ -10,14 +14,15 @@ const Data = () =>{
     return(
         <div className="data_information">
             <div className="data_container">
-                <h1 className="data_headers">Survey Data Analysis</h1>
+                <h1 className="data_headers"><strong>Survey Data Analysis</strong></h1>
                 {surveyData ?  
                     <div className="data_card_container analysis">
                         <ul className="data_points">
                             <h3>Original Position</h3>
                             <ul>
-                                <li>Latitude: {location.latitude}</li>
-                                <li>Longitude: {location.longitude}</li>
+                                <li><strong>Latitude:</strong> {location.latitude}</li>
+                                <li><strong>Longitude:</strong> {location.longitude}</li>
+                                <li><strong>ECEF: </strong>({location.x} , {location.y}, {location.z})</li>
                             </ul>
                             <h3>Positional Change</h3>
                             {surveyTypes.map((survey, key)=>(
@@ -35,16 +40,16 @@ const Data = () =>{
                             <ul>
                                 <ul>
                                     <h5>JPL</h5>
-                                    <li>{`High Confidence: ${tolerances[0]} => # of Points: ${calculatedTolerances(location, surveyData)[0]}`}</li>
-                                    <li>{`Low Confidence: ${tolerances[1]} => # of Points: ${calculatedTolerances(location, surveyData)[1]}`}</li>
-                                    <li>{`No Confidence: >${tolerances[1]} => # of Points: ${calculatedTolerances(location, surveyData)[2]}`}</li>
+                                    <li><strong>High Confidence:</strong> {` ${tolerances[0]} => # of Points: ${calculatedTolerances(location, surveyData)[0]}`}</li>
+                                    <li><strong>Low Confidence:</strong>{` ${tolerances[1]} => # of Points: ${calculatedTolerances(location, surveyData)[1]}`}</li>
+                                    <li><strong>No Confidence:</strong>{` ${tolerances[1]} => # of Points: ${calculatedTolerances(location, surveyData)[2]}`}</li>
                                 </ul>
                                 <ul>
                                     <h5>OPUS</h5>
-                                    <li>{`High Confidence: ${tolerances[2]} => # of Points: ${calculatedTolerances(location, surveyData)[3]}`}</li>
-                                    <li>{`Mid Confidence: ${tolerances[3]} => # of Points: ${calculatedTolerances(location, surveyData)[4]}`}</li>
-                                    <li>{`Low Confidence: ${tolerances[4]} => # of Points: ${calculatedTolerances(location, surveyData)[5]}`}</li>
-                                    <li>{`No Confidence: >${tolerances[4]} => # of Points: ${calculatedTolerances(location, surveyData)[6]}`}</li>
+                                    <li><strong>High Confidence:</strong>{` ${tolerances[2]} => # of Points: ${calculatedTolerances(location, surveyData)[3]}`}</li>
+                                    <li><strong>Mid Confidence:</strong>{` ${tolerances[3]} => # of Points: ${calculatedTolerances(location, surveyData)[4]}`}</li>
+                                    <li><strong>Low Confidence:</strong>{` ${tolerances[4]} => # of Points: ${calculatedTolerances(location, surveyData)[5]}`}</li>
+                                    <li><strong>No Confidence:</strong>{` ${tolerances[4]} => # of Points: ${calculatedTolerances(location, surveyData)[6]}`}</li>
                                 </ul>
                             </ul>
                         </ul>

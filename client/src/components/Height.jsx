@@ -11,6 +11,7 @@ const start_background_color = "white";
  * @param {integer} xTickSpacing - the calculated distance between the ticks based on the data point and size of chart on x axis 
  * @param {Object} ctx - the context of the canvas
  * @param {integer} w - width of the canvas
+ * @returns {null}
  */
 const drawXAxis =(numXticks, tickSpacing, xTickSpacing, ctx, w)=>{
     for(let i=1; i<=numXticks; i++) {
@@ -47,7 +48,10 @@ const drawXAxis =(numXticks, tickSpacing, xTickSpacing, ctx, w)=>{
  * @param {integer} tickSpacing - spacing of y axis tick marks
  * @param {integer} xTickSpacing - spacing of x axis tick marks
  * @param {Object} ctx - context object for the canvas
- * @param {integer} yOffset - distance from the lift bound of the canvas to start the chart
+ * @param {integer} yOffset - distance from the lift bound of the 
+ * @param {Object} surveyPoints - data points from the survey data to set dates of x axis
+ * @returns {null}
+ * Canvas to start the chart
  */
 const drawXticks =(numYticks, numXTicks, tickSpacing, xTickSpacing, ctx,  yOffset, surveyPoints) =>{
     //Creating a data array from the data based on the string provided and only returning the data for the selected range
@@ -89,6 +93,7 @@ const drawXticks =(numYticks, numXTicks, tickSpacing, xTickSpacing, ctx,  yOffse
  * @param {integer} w - width of canvas
  * @param {integer} yOffset - distance from left bound of canvas to start drawing
  * @param {integer} xTickSpacing - distance between the x values on the graph
+ * @returns {null}
  */
 const drawYAxis =(numYticks, tickSpacing, ctx, h,w, yOffset, xTickSpacing)=>{
     //semi responsive solution to the graph label that calculates font size off of width of canvas
@@ -131,8 +136,8 @@ const drawYAxis =(numYticks, tickSpacing, ctx, h,w, yOffset, xTickSpacing)=>{
  * @param {integer} tickSpacing - y axis spacing between the ticks on the graph
  * @param {Object} ctx - context object for current canvas
  * @param {integer} w - width of canvas
- * @param {integer} dataReduction - value calculated to reduce the scale of the graph to help visualize changes better
  * @param {integer} xTickSpacing - x axis tick spacing value
+ * @returns {null}
  */
 const drawYTicks =(numYticks, tickSpacing, ctx, w, xTickSpacing) =>{
     const fontHeight = w*.03;
@@ -142,7 +147,7 @@ const drawYTicks =(numYticks, tickSpacing, ctx, w, xTickSpacing) =>{
     ctx.fillStyle = '#000000';
     ctx.rotate(-Math.PI / 2);
     ctx.translate(-w*.15, 50)
-    ctx.fillText(`Height(1/1000 ft)`, 0,0)
+    ctx.fillText(`Height (mm)`, 0,0)
     ctx.rotate(Math.PI / 2)
     ctx.setTransform(1,0,0,1,0,0);
     //Loop to draw data points and ticks
@@ -166,12 +171,12 @@ const drawYTicks =(numYticks, tickSpacing, ctx, w, xTickSpacing) =>{
 
 /**
  * Function to draw the  data onto the  chart
- * @param {string} data - data string from IBM.js
- * @param {integer} numDates - number of data points to plot
+ * @param {Object} data - data object from survey data
+ * @param {integer} xTickSpacing - distance between points when plotted
  * @param {Object} ctx - current canvas context
  * @param {integer} h - height of canvas
- * @param {integer} yOffset - distance from left bound of the canvas to start plotting
- * @returns 
+ * @param {integer} w - width of canvas
+ * @returns {null}
  */
 
 const drawData = (data, xTickSpacing, ctx, h,w)=>{
@@ -218,7 +223,7 @@ const Height =()=>{
                 }
             ))
             const surveyPoints = unsortedSurveyPoints.sort((a,b)=> a.date - b.date)
-            
+
             const canvas = canvasRef.current;
             canvas.width = canvasContainer.current.offsetWidth*.9;
             canvas.height = 600;
@@ -254,7 +259,7 @@ const Height =()=>{
         <>
             <div className="height_graph">
                 <h1 className="header height_header">
-                    Height Change Over Time
+                    Altitude Change Over Time
                 </h1>
                 <div className='height_graph_container' ref={canvasContainer}>
                     <canvas

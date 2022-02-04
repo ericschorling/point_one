@@ -1,8 +1,11 @@
 import React from "react";
 import { calcDistanceTraveled } from "../utilities/functions";
-
 import { useLocationAndSurvey } from "../utilities/hooks";
 
+/**
+ * Data Point list component rendered for the application
+ * @returns {Component}
+ */
 const DataPointList = (props) =>{
     const dataType = props.type.split('_')[0]
     const [location, surveyData] = useLocationAndSurvey(true)
@@ -57,7 +60,7 @@ const DataPointList = (props) =>{
                                             {calcDistanceTraveled(location.latitude, data.latitude, location.longitude, data.longitude).toFixed(4)}mm
                                             <strong>  Alt. Change: </strong>
                                             {(location.height - data.height).toFixed(2)*100} cms  
-                                            <strong> SD: </strong> 
+                                            <strong> {`\u03C3`}: </strong> 
                                             {data.variance.toFixed(5)}
                                             <strong> (X,Y, Z): </strong>
                                             ({data.x_variance}, {data.y_variance}, {data.z_variance}) 

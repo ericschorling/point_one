@@ -1,3 +1,12 @@
+/**
+ * Function to calculate distance in millimeters
+ * @param {integer} latitude1 - latitude of origin
+ * @param {integer} latitude2 - latitude of data point
+ * @param {integer} longitude1 - longitude of origin
+ * @param {integer} longitude2 - longitude of data point
+ * @returns {integer} - distance in mm
+ */
+
 export const calcDistanceTraveled=(latitude1, latitude2, longitude1, longitude2)=>{
     //Source: https://www.geeksforgeeks.org/haversine-formula-to-find-distance-between-two-points-on-a-sphere/ Calculation for distance between two points of longitutde and latitude
     // distance between latitudes
@@ -18,12 +27,33 @@ export const calcDistanceTraveled=(latitude1, latitude2, longitude1, longitude2)
     let c = 2 * Math.asin(Math.sqrt(a));
     return rad * c * 1000000;
 }
+
+/**
+ * Function to calculate average of a list of data points
+ * @param {Object[]} data - Object that contains information about the data that is going to be averaged
+ * @param {string} data[].source - name of survey source
+ * @param {string} data[].[dataType] - data types for the object
+ * @param {string} dataType - survey source to calculate
+ * @param {string} dataPoint - data point within survey data to use for calculation
+ * @returns {integer} - average for the data requested
+ */
 export const averageFunction = (data, dataType, dataPoint)=>{
     const filteredData = data.filter(data => data.source === dataType)
     const dataPoints = filteredData.map(data => data[dataPoint])
     const average = dataPoints.reduce((current, previous)=>current + previous) / dataPoints.length
     return average
 }
+
+/**
+ * Function to calculate average of a list of data points
+ * @param {Object} location - the original location of the tower
+ * @param {integer} location.latitude - latitude of original location
+ * @param {integer} location.longitude - longitude of original location
+ * @param {Object[]} surveyData - all the survey data points collected 
+ * @param {integer} surveyData.latitude - latitude of survey point
+ * @param {integer} surveyData.longitude - longitude of survey point
+ * @returns {integer[]} - array of number of instances of each tolerance level
+ */
 
 export const calculatedTolerances = (location, surveyData) => {
     let jplHigh = 0

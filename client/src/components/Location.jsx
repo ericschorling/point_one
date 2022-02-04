@@ -11,6 +11,7 @@ const start_background_color = "white";
  * @param {integer} xTickSpacing - the calculated distance between the ticks based on the data point and size of chart on x axis 
  * @param {Object} ctx - the context of the canvas
  * @param {integer} w - width of the canvas
+ * @returns {null}
  */
 const drawXAxis =(numXticks, tickSpacing, xTickSpacing, ctx, w)=>{
     for(let i=1; i<=numXticks; i++) {
@@ -47,6 +48,7 @@ const drawXAxis =(numXticks, tickSpacing, xTickSpacing, ctx, w)=>{
  * @param {integer} xTickSpacing - spacing of x axis tick marks
  * @param {Object} ctx - context object for the canvas
  * @param {integer} yOffset - distance from the lift bound of the canvas to start the chart
+ * @returns {null}
  */
 const drawXticks =(numYticks, numXTicks, tickSpacing, xTickSpacing, ctx,  yOffset) =>{
     //Creating a data array from the data based on the string provided and only returning the data for the selected range
@@ -72,7 +74,7 @@ const drawXticks =(numYticks, numXTicks, tickSpacing, xTickSpacing, ctx,  yOffse
 
         //writing date data to chart
         //fill text could be an optional item
-        ctx.fillText(`${((numYticks/2 - i)*xTickSpacing)/10}mm`, 0,0);
+        ctx.fillText(`${((numYticks/2 - i)*xTickSpacing)/10}(1/1T)`, 0,0);
         
         //using transform required resetting the base of the context to 0
         ctx.setTransform(1,0,0,1,0,0);
@@ -89,15 +91,16 @@ const drawXticks =(numYticks, numXTicks, tickSpacing, xTickSpacing, ctx,  yOffse
  * @param {integer} w - width of canvas
  * @param {integer} yOffset - distance from left bound of canvas to start drawing
  * @param {integer} xTickSpacing - distance between the x values on the graph
+ * @returns {null}
  */
 const drawYAxis =(numYticks, tickSpacing, ctx, h,w, yOffset, xTickSpacing)=>{
     //semi responsive solution to the graph label that calculates font size off of width of canvas
-    const fontHeight = (h*.05);
+    const fontHeight = (h*.02);
     //Drawing graph label
     ctx.font= `${fontHeight}px Arial`;
     ctx.textAlign='right';
     ctx.fillStyle = '#000000';
-    ctx.fillText(`Longitude`, w*.6,h*.95);
+    ctx.fillText(`Longitude`, w*.55,h*.95);
 
     //loop to draw all lines for y axis
     for(let i=0; i<=numYticks; i++) {
@@ -131,20 +134,20 @@ const drawYAxis =(numYticks, tickSpacing, ctx, h,w, yOffset, xTickSpacing)=>{
  * @param {integer} tickSpacing - y axis spacing between the ticks on the graph
  * @param {Object} ctx - context object for current canvas
  * @param {integer} w - width of canvas
- * @param {integer} dataReduction - value calculated to reduce the scale of the graph to help visualize changes better
  * @param {integer} xTickSpacing - x axis tick spacing value
+ * @returns {null}
  */
 
 const drawYTicks =(numYticks, tickSpacing, ctx, w, xTickSpacing) =>{
 
-    const fontHeight = w*.0;
+    const fontHeight = w*.02;
     //Chart label
     ctx.font= `${fontHeight}px Arial`;
     ctx.textAlign='right';
     ctx.fillStyle = '#000000';
     ctx.rotate(-Math.PI / 2);
-    ctx.translate(-w*.2, 30)
-    ctx.fillText(`Height(1/1000 ft)`, 0,0)
+    ctx.translate(-w*0.3, 10)
+    ctx.fillText(`Latitude`, 0,0)
     ctx.rotate(Math.PI / 2)
     ctx.setTransform(1,0,0,1,0,0);
     //Lopp to draw data points and ticks
@@ -160,7 +163,7 @@ const drawYTicks =(numYticks, tickSpacing, ctx, w, xTickSpacing) =>{
         ctx.font= '10px Arial';
         ctx.textAlign='right';
         ctx.fillStyle = "#000000";
-        ctx.fillText(`${((numYticks/2 - i)*xTickSpacing)/10}mm`, numYticks+w*.1 - xTickSpacing, tickSpacing*i);
+        ctx.fillText(`${((numYticks/2 - i)*xTickSpacing)/10}(1/1T)`, numYticks+w*.1 - xTickSpacing, tickSpacing*i);
         
         ctx.setTransform(1,0,0,1,0,0);
     }
@@ -168,15 +171,14 @@ const drawYTicks =(numYticks, tickSpacing, ctx, w, xTickSpacing) =>{
 
 /**
  * Function to draw the  data onto the  chart
- * @param {string} data - data string from IBM.js
+ * @param {string} data - data from the survey data
  * @param {integer} numDates - number of data points to plot
  * @param {Object} ctx - current canvas context
  * @param {integer} h - height of canvas
- * @param {integer} yOffset - distance from left bound of the canvas to start plotting
- * @returns 
+ * @returns {null}
  */
 
-const drawData = (data,ctx, h,w, location)=>{
+const drawData = (data,ctx, h,w)=>{
     
     //Move the context start to the bottom left of the graph 
     ctx.translate(w*.54,h*.4);
@@ -231,8 +233,6 @@ const Location =()=>{
     const[location, surveyData] = useLocationAndSurvey(true)
     //Canvas rendered immediately upon load 
     //This will rerender every time the isReset value changes 
-        
-
     useEffect(()=>{
         if(surveyData) {
             const surveyPoints = surveyData.filter(data=> data.status ==="COMPLETE").map(data=>(
@@ -246,7 +246,7 @@ const Location =()=>{
                 }
             ))
             const canvas = canvasRef.current;
-            canvas.width = canvasContainer.current.offsetWidth*.8;
+            canvas.width = canvasContainer.current.offsetWidth*.9;
             canvas.height = 600;
             canvas.style.width = `${canvas.width}px`;
             canvas.style.height = `${canvas.height}px`;
@@ -291,15 +291,15 @@ const Location =()=>{
                     <div>
                         <ul className="plot_key">
                             <li className="dot green"></li>
-                            <li>{"JPL Var < 0.5cm"}</li>
+                            <li>{"JPL \u0394 < 0.5cm"}</li>
                             <li className="dot blue"></li>
-                            <li>{"JPL Var > 0.5cm and < 0.8cm"}</li>
+                            <li>{"JPL \u0394 > 0.5cm and < 0.8cm"}</li>
                             <li className="dot red"></li>
-                            <li>{"JPL Var > 0.8cm"}</li>
+                            <li>{"JPL \u0394 > 0.8cm"}</li>
                             <li className="dot pink"></li>
-                            <li>{"OPUS Var < 2cm"}</li>
+                            <li>{"OPUS \u0394 < 2cm"}</li>
                             <li className="dot black"></li>
-                            <li>{"OPUS Var > 2cm"}</li>
+                            <li>{"OPUS \u0394 > 2cm"}</li>
                         </ul>
                     </div>
                 </div>  

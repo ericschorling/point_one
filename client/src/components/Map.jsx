@@ -2,8 +2,13 @@ import React, {useRef, useEffect} from 'react'
 import mapboxgl from '!mapbox-gl' // eslint-disable-line import/no-webpack-loader-syntax
 import { useLocationAndSurvey } from '../utilities/hooks';
 
-
+//Mapbox access token for api use
 mapboxgl.accessToken ='pk.eyJ1IjoiZXNjaG9ybGluZyIsImEiOiJja3l1Z2N6dmswYzR5MnVxazA3MGwwa2owIn0.GjT6MseObzq1HfP6NrG1NQ'
+
+/**
+ * Map component rendered for the application
+ * @returns {Component}
+ */
 
 function Map() {
   const mapContainer = useRef(null);
@@ -90,9 +95,18 @@ useEffect(() => {
       
       <div className='map_container'>
         <h1>
-          Location
+          Mapped Physical Location
         </h1>
         <div ref={mapContainer} className='map' />
+        <p>*All Complete Survey Points Mapped</p>
+        <div>
+            <ul className="plot_key">
+                <li className="dot black"></li>
+                <li>Origin</li>
+                <li className="dot blue"></li>
+                <li>Survey Points</li>
+            </ul>
+        </div>
       </div>
   )
 }
